@@ -1,0 +1,29 @@
+User-agent: *
+Allow: /
+
+# Important pages
+Allow: /classes
+Allow: /trainers
+Allow: /programs
+Allow: /contact
+Allow: /about
+Allow: /gallery
+Allow: /nutrition
+
+# Static assets
+Allow: /logo1.png
+Allow: /heropage.mp4
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.webp
+
+# Sitemap
+Sitemap: https://thrustfitness.com/sitemap.xml
+
+# Crawl delay (optional, 1 second)
+Crawl-delay: 1

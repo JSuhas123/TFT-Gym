@@ -1,0 +1,104 @@
+{
+  "name": "Thrust Fitness Bangalore",
+  "short_name": "Thrust Fitness",
+  "description": "Premier fitness center in Jai Bharath Nagar, Baiyappanahalli, with expert trainers and top-notch equipment.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#dc2626",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["fitness", "health", "sports"],
+  "icons": [
+    {
+      "src": "/logo1.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/logo1.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/logo1.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo1.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo1.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo1.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo1.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/logo1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Thrust Fitness Gym"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Classes",
+      "short_name": "Classes",
+      "description": "View our fitness classes",
+      "url": "/classes",
+      "icons": [
+        {
+          "src": "/logo1.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Trainers",
+      "short_name": "Trainers", 
+      "description": "Meet our expert trainers",
+      "url": "/trainers",
+      "icons": [
+        {
+          "src": "/logo1.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Contact",
+      "short_name": "Contact",
+      "description": "Get in touch with us",
+      "url": "/contact",
+      "icons": [
+        {
+          "src": "/logo1.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}
