@@ -3,11 +3,8 @@ import { Instagram, Sparkles, Trophy, Zap } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useAnalytics } from '../hooks/useAnalytics';
 
-interface HeroProps {
-  onJoinWaitlist: () => void;
-}
 
-export const Hero: React.FC<HeroProps> = ({ onJoinWaitlist }) => {
+export const Hero: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
@@ -77,7 +74,7 @@ export const Hero: React.FC<HeroProps> = ({ onJoinWaitlist }) => {
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 1.5 }}
-        className="fixed left-6 top-1/2 transform -translate-y-1/2 z-20 flex flex-col space-y-4"
+        className="fixed left-3 sm:left-4 lg:left-6 top-1/2 transform -translate-y-1/2 z-20 flex flex-col space-y-3 sm:space-y-4 hidden md:flex"
       >
         {socialLinks.map((social, index) => (
           <motion.a
@@ -94,18 +91,18 @@ export const Hero: React.FC<HeroProps> = ({ onJoinWaitlist }) => {
             onClick={() => analytics.socialClick(social.label.toLowerCase())}
           >
             <motion.div 
-              className="w-12 h-12 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center border border-yellow-600/30 hover:bg-yellow-600/20 hover:border-yellow-600/60 transition-all duration-300"
+              className="w-10 h-10 sm:w-12 sm:h-12 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center border border-yellow-600/30 hover:bg-yellow-600/20 hover:border-yellow-600/60 transition-all duration-300"
               whileHover={{ 
                 boxShadow: "0 0 20px rgba(202, 138, 4, 0.4)",
                 borderColor: "rgba(202, 138, 4, 0.8)"
               }}
             >
-              <social.icon className="w-6 h-6 text-white group-hover:text-yellow-400 transition-colors" />
+              <social.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:text-yellow-400 transition-colors" />
             </motion.div>
             
             {/* Tooltip */}
             <motion.div
-              className="absolute left-16 top-1/2 transform -translate-y-1/2 bg-black/80 text-white px-3 py-1 rounded-md text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap"
+              className="absolute left-12 sm:left-16 top-1/2 transform -translate-y-1/2 bg-black/80 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-md text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap"
               initial={{ opacity: 0, x: -10 }}
               whileHover={{ opacity: 1, x: 0 }}
             >
@@ -117,12 +114,12 @@ export const Hero: React.FC<HeroProps> = ({ onJoinWaitlist }) => {
       </motion.div>
 
       {/* Hero Content */}
-      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
+      <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         <motion.h1
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-white mb-4 sm:mb-6 leading-tight"
         >
           <motion.span 
             className="text-yellow-600"
@@ -136,17 +133,19 @@ export const Hero: React.FC<HeroProps> = ({ onJoinWaitlist }) => {
             transition={{ duration: 3, repeat: Infinity }}
           >
             Thrust
-          </motion.span> Fitness
+          </motion.span>{' '}
+          <br className="sm:hidden" />
+          Fitness
         </motion.h1>
 
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="mb-12"
+          className="mb-8 sm:mb-10 lg:mb-12"
         >
           <motion.p 
-            className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed"
+            className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto leading-relaxed px-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.6 }}
@@ -162,19 +161,12 @@ export const Hero: React.FC<HeroProps> = ({ onJoinWaitlist }) => {
           </motion.p>
         </motion.div>
 
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.7, ease: "backOut" }}
-        >
-        </motion.div>
-
         {/* Features Preview */}
         <motion.div
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.9, ease: "easeOut" }}
-          className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-white"
+          className="mt-8 sm:mt-12 lg:mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-white"
         >
           {[
             { icon: Zap, number: "5:30AM-10:30PM", label: "Access", delay: 0 },
@@ -190,14 +182,14 @@ export const Hero: React.FC<HeroProps> = ({ onJoinWaitlist }) => {
               whileHover={{ scale: 1.1 }}
             >
               <motion.div 
-                className="inline-flex items-center justify-center w-16 h-16 bg-yellow-600/20 rounded-full mb-4 group-hover:bg-yellow-600/40 transition-colors"
+                className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-yellow-600/20 rounded-full mb-3 sm:mb-4 group-hover:bg-yellow-600/40 transition-colors"
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.6 }}
               >
-                <feature.icon className="w-8 h-8 text-yellow-400" />
+                <feature.icon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-yellow-400" />
               </motion.div>
               <motion.div 
-                className="text-3xl font-bold text-yellow-600 mb-2"
+                className="text-xl sm:text-2xl lg:text-3xl font-bold text-yellow-600 mb-1 sm:mb-2"
                 animate={{ 
                   scale: [1, 1.1, 1],
                 }}
@@ -209,21 +201,21 @@ export const Hero: React.FC<HeroProps> = ({ onJoinWaitlist }) => {
               >
                 {feature.number}
               </motion.div>
-              <div className="text-lg group-hover:text-yellow-200 transition-colors">
+              <div className="text-sm sm:text-base lg:text-lg group-hover:text-yellow-200 transition-colors">
                 {feature.label}
               </div>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Bottom Social Media Bar - Alternative placement for mobile */}
+        {/* Bottom Social Media Bar - Mobile Only */}
         <motion.div
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 1.8 }}
-          className="mt-20 block md:hidden"
+          className="mt-12 sm:mt-16 lg:mt-20 block md:hidden"
         >
-          <div className="flex justify-center space-x-6">
+          <div className="flex justify-center space-x-4 sm:space-x-6">
             {socialLinks.map((social, index) => (
               <motion.a
                 key={social.label}
@@ -236,15 +228,16 @@ export const Hero: React.FC<HeroProps> = ({ onJoinWaitlist }) => {
                 transition={{ delay: 2 + index * 0.1, duration: 0.3 }}
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.9 }}
+                onClick={() => analytics.socialClick(social.label.toLowerCase())}
               >
-                <div className="w-12 h-12 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center border border-yellow-600/30 hover:bg-yellow-600/20 hover:border-yellow-600/60 transition-all duration-300">
-                  <social.icon className="w-6 h-6 text-white group-hover:text-yellow-400 transition-colors" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center border border-yellow-600/30 hover:bg-yellow-600/20 hover:border-yellow-600/60 transition-all duration-300">
+                  <social.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:text-yellow-400 transition-colors" />
                 </div>
               </motion.a>
             ))}
           </div>
           <motion.p 
-            className="text-gray-400 text-sm mt-4"
+            className="text-gray-400 text-xs sm:text-sm mt-3 sm:mt-4 px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 2.5, duration: 0.5 }}

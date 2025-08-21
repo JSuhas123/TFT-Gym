@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Award, Heart, Instagram, Shield } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, } from 'react';
 import * as THREE from 'three';
 
 export const Footer = () => {
@@ -8,7 +8,6 @@ export const Footer = () => {
   const sceneRef = useRef<THREE.Scene | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const dumbbellsRef = useRef<THREE.Group[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -101,16 +100,15 @@ export const Footer = () => {
     };
 
     animate();
-    setIsLoaded(true);
+    animate();
 
     const handleResize = () => {
-      if (mountRef.current && rendererRef.current) {
-        const width = mountRef.current.clientWidth;
-        const height = 400;
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix();
-        renderer.setSize(width, height);
-      }
+      if (!mountRef.current) return;
+      const width = mountRef.current.clientWidth;
+      const height = 400;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
     };
 
     window.addEventListener('resize', handleResize);
@@ -166,7 +164,7 @@ export const Footer = () => {
   className="flex flex-col items-center mb-6"
 >
   <img
-    src="src/public/logo1.png" 
+    src="/logo1.png" 
     alt="Thrust Fitness Logo"
     className="w-32 h-32 mb-6 drop-shadow-2xl"
   />
