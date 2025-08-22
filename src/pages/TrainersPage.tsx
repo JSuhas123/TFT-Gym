@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import React from 'react';
+import OptimizedImage from '../components/OptimizedImage';
 
 type Trainer = {
   name: string;
@@ -17,7 +18,7 @@ export const TrainersPage: React.FC = () => {
       specialty: 'Bodybuilding, Fat Loss & Muscle Gain',
       experience: '20+ years',
       certifications: ['Mr. Karnataka', 'Mr. Bangalore', 'Mr. India'],
-      image: 'https://images.pexels.com/photos/414029/pexels-photo-414029.jpeg?auto=compress&cs=tinysrgb&w=400',
+      image: '/Jacob.JPG',
       bio: 'Highly accomplished bodybuilder with decades of experience helping clients achieve peak muscle growth and fat loss.'
     },
     {
@@ -33,7 +34,7 @@ export const TrainersPage: React.FC = () => {
       specialty: 'Strength Training, Fat Loss & Weight Gain',
       experience: '2+ years ',
       certifications: [],
-      image: 'https://images.pexels.com/photos/3253503/pexels-photo-3253503.jpeg?auto=compress&cs=tinysrgb&w=400',
+      image: '',
       bio: 'Focused on strength training, fat loss, and sustainable weight gain strategies tailored for individuals.'
     },
     {
@@ -41,7 +42,7 @@ export const TrainersPage: React.FC = () => {
       specialty: 'CrossFit, Functional Training & Kickboxing',
       experience: '2+ years',
       certifications: ['Physiotherapist'],
-      image: 'https://images.pexels.com/photos/2294361/pexels-photo-2294361.jpeg?auto=compress&cs=tinysrgb&w=400',
+      image: '/Vinod.JPG',
       bio: 'Specialist in fat loss, muscle gain, and functional training, with expertise in injury recovery and rehabilitation.'
     }
   ];
@@ -89,10 +90,11 @@ export const TrainersPage: React.FC = () => {
                 viewport={{ once: true }}
                 className="bg-gray-900 rounded-lg overflow-hidden hover:bg-gray-800 transition-colors duration-300"
               >
-                <img
+                <OptimizedImage
                   src={trainer.image}
                   alt={trainer.name}
                   className="w-full h-64 object-cover"
+                  fallbackSrc="/logo1.png"
                 />
                 <div className="p-6">
                   <h3 className="text-xl font-bold mb-2">{trainer.name}</h3>

@@ -1,15 +1,11 @@
 import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
-import logo from '../public/logo1.png';
+import logo from '/logo1.png';
 
 import { Link, useLocation } from 'react-router-dom';
 
-interface NavigationProps {
-  onLoginClick: () => void;
-}
-
-const Navigation: React.FC<NavigationProps> = ({ onLoginClick }) => {
+const Navigation: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 

@@ -27,14 +27,28 @@ export default defineConfig({
         drop_console: true,
         drop_debugger: true
       }
-    }
+    },
+    // Enable source maps for better debugging
+    sourcemap: false,
+    // Optimize assets
+    assetsInlineLimit: 4096,
+    // CSS code splitting
+    cssCodeSplit: true
   },
   server: {
     port: 5173,
-    host: true
+    host: true,
+    // Enable HMR for better development experience
+    hmr: true
   },
   preview: {
     port: 4173,
     host: true
+  },
+  // Enable prefetching for better performance
+  experimental: {
+    renderBuiltUrl(filename: string) {
+      return '/' + filename;
+    }
   }
 });

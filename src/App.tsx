@@ -1,90 +1,151 @@
-import { useState } from 'react';
+import { Component, Suspense, lazy } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
+import { LoadingPage } from './components/LoadingPage';
 import { PageLayout } from './components/PageLayout';
-import { AboutPage } from './pages/AboutPage';
-import { ClassesPage } from './pages/ClassesPage';
-import ContactPage from './pages/ContactPage';
-import { GalleryPage } from './pages/GalleryPage';
-import { HomePage } from './pages/HomePage';
-import { NutritionPage } from './pages/NutritionPage';
-//import { ProgramsPage } from './pages/ProgramsPage';
-import { TrainersPage } from './pages/TrainersPage';
+
+// Lazy load pages for better performance
+const HomePage = lazy(() => import('./pages/HomePage').then(module => ({ default: module.HomePage })));
+const AboutPage = lazy(() => import('./pages/AboutPage').then(module => ({ default: module.AboutPage })));
+const TrainersPage = lazy(() => import('./pages/TrainersPage').then(module => ({ default: module.TrainersPage })));
+const ClassesPage = lazy(() => import('./pages/ClassesPage').then(module => ({ default: module.ClassesPage })));
+const NutritionPage = lazy(() => import('./pages/NutritionPage').then(module => ({ default: module.NutritionPage })));
+const GalleryPage = lazy(() => import('./pages/GalleryPage').then(module => ({ default: module.GalleryPage })));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+
+// Error Boundary Component
+class ErrorBoundary extends Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(): { hasError: boolean } {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center text-center">
+          <div>
+            <h1 className="text-3xl font-bold text-white mb-4">Oops! Something went wrong</h1>
+            <p className="text-gray-400 mb-6">We're sorry for the inconvenience. Please refresh the page.</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded transition-colors"
+            >
+              Refresh Page
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 function App() {
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-
   const handleLogin = () => {
-    setIsLoginModalOpen(true);
-  };
-
-  const closeLoginModal = () => {
-    setIsLoginModalOpen(false);
+    // Login modal functionality can be implemented here
+    console.log('Login functionality to be implemented');
   };
 
   return (
-    <Router>
-      <div className="min-h-screen bg-black">
-        <Routes>
-          <Route 
-            path="/" 
-            element={
-              <PageLayout onLogin={handleLogin}>
-                <HomePage />
-              </PageLayout>
-            } 
-          />
-          <Route 
-            path="/about" 
-            element={
-              <PageLayout onLogin={handleLogin}>
-                <AboutPage />
-              </PageLayout>
-            } 
-          />
-          <Route 
-            path="/trainers" 
-            element={
-              <PageLayout onLogin={handleLogin}>
-                <TrainersPage />
-              </PageLayout>
-            } 
-          />
-          <Route 
-            path="/classes" 
-            element={
-              <PageLayout onLogin={handleLogin}>
-                <ClassesPage />
-              </PageLayout>
-            } 
-          />
-          <Route 
-            path="/nutritio" 
-            element={
-              <PageLayout onLogin={handleLogin}>
-                <NutritionPage />
-              </PageLayout>
-            } 
-          />
-          <Route 
-            path="/gallery" 
-            element={
-              <PageLayout onLogin={handleLogin}>
-                <GalleryPage />
-              </PageLayout>
-            } 
-          />
-          <Route 
-            path="/contact" 
-            element={
-              <PageLayout onLogin={handleLogin}>
-                <ContactPage />
-              </PageLayout>
-            } 
-          />
-        </Routes>
-      </div>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <div className="min-h-screen bg-black">
+          <Suspense fallback={<LoadingPage />}>
+            <Routes>
+              <Route 
+                path="/" 
+                element={
+                  <PageLayout onLogin={handleLogin}>
+                    <HomePage />
+                  </PageLayout>
+                } 
+              />
+              <Route 
+                path="/about" 
+                element={
+                  <PageLayout onLogin={handleLogin}>
+                    <AboutPage />
+                  </PageLayout>
+                } 
+              />
+              <Route 
+                path="/trainers" 
+                element={
+                  <PageLayout onLogin={handleLogin}>
+                    <TrainersPage />
+                  </PageLayout>
+                } 
+              />
+              <Route 
+                path="/classes" 
+                element={
+                  <PageLayout onLogin={handleLogin}>
+                    <ClassesPage />
+                  </PageLayout>
+                } 
+              />
+              <Route 
+                path="/nutrition" 
+                element={
+                  <PageLayout onLogin={handleLogin}>
+                    <NutritionPage />
+                  </PageLayout>
+                } 
+              />
+              <Route 
+                path="/gallery" 
+                element={
+                  <PageLayout onLogin={handleLogin}>
+                    <GalleryPage />
+                  </PageLayout>
+                } 
+              />
+              <Route 
+                path="/contact" 
+                element={
+                  <PageLayout onLogin={handleLogin}>
+                    <ContactPage />
+                  </PageLayout>
+                } 
+              />
+              {/* Catch-all route for 404s */}
+              <Route 
+                path="*" 
+                element={
+                  <PageLayout onLogin={handleLogin}>
+                    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center text-center">
+                      <div>
+                        <h1 className="text-4xl font-bold text-white mb-4">404 - Page Not Found</h1>
+                        <p className="text-gray-400 mb-6">The page you're looking for doesn't exist.</p>
+                        <a
+                          href="/"
+                          className="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded transition-colors"
+                        >
+                          Go Home
+                        </a>
+                      </div>
+                    </div>
+                  </PageLayout>
+                } 
+              />
+            </Routes>
+          </Suspense>
+        </div>
+      </Router>
+    </ErrorBoundary>
   );
 }
 
