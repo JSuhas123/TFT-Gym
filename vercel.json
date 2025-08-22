@@ -1,13 +1,13 @@
 {
   "rewrites": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ],
   "headers": [
     {
-      "source": "/:path*.(js|css|woff2|svg|png|jpg|jpeg|gif|ico)",
+      "source": "/(.*)\\.(js|css|woff2?|svg|png|jpg|jpeg|gif|ico|mp4)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -16,7 +16,7 @@
       ]
     },
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "headers": [
         {
           "key": "X-Content-Type-Options",
@@ -32,10 +32,5 @@
         }
       ]
     }
-  ],
-  "functions": {
-    "app/api/*.ts": {
-      "runtime": "nodejs18.x"
-    }
-  }
+  ]
 }
