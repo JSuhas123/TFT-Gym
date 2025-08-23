@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import OptimizedImage from '../components/OptimizedImage';
+import { getTrainerImage } from '../utils/imageUtils';
 
 type Trainer = {
   name: string;
@@ -18,7 +19,7 @@ export const TrainersPage: React.FC = () => {
       specialty: 'Bodybuilding, Fat Loss & Muscle Gain',
       experience: '20+ years',
       certifications: ['Mr. Karnataka', 'Mr. Bangalore', 'Mr. India'],
-      image: '/Jacob.JPG',
+      image: getTrainerImage('Jacob'),
       bio: 'Highly accomplished bodybuilder with decades of experience helping clients achieve peak muscle growth and fat loss.'
     },
     {
@@ -34,7 +35,7 @@ export const TrainersPage: React.FC = () => {
       specialty: 'Strength Training, Fat Loss & Weight Gain',
       experience: '2+ years ',
       certifications: [],
-      image: '',
+      image: getTrainerImage('Sendil'),
       bio: 'Focused on strength training, fat loss, and sustainable weight gain strategies tailored for individuals.'
     },
     {
@@ -42,7 +43,7 @@ export const TrainersPage: React.FC = () => {
       specialty: 'CrossFit, Functional Training & Kickboxing',
       experience: '2+ years',
       certifications: ['Physiotherapist'],
-      image: '/Vinod.JPG',
+      image: getTrainerImage('Vinod'),
       bio: 'Specialist in fat loss, muscle gain, and functional training, with expertise in injury recovery and rehabilitation.'
     }
   ];
@@ -92,9 +93,9 @@ export const TrainersPage: React.FC = () => {
               >
                 <OptimizedImage
                   src={trainer.image}
-                  alt={trainer.name}
+                  alt={`${trainer.name} - Expert Trainer at Thrust Fitness & Training`}
                   className="w-full h-64 object-cover"
-                  fallbackSrc="/logo1.png"
+                  retryCount={3}
                 />
                 <div className="p-6">
                   <h3 className="text-xl font-bold mb-2">{trainer.name}</h3>
