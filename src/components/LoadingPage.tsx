@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import React from 'react';
+import OptimizedImage from './OptimizedImage';
 
 export const LoadingPage: React.FC = () => {
   return (
@@ -12,10 +13,12 @@ export const LoadingPage: React.FC = () => {
           transition={{ duration: 0.5 }}
           className="mb-8"
         >
-          <img
+          <OptimizedImage
             src="/logo1.png"
-            alt="Thrust Fitness"
+            alt="Thrust Fit Tribe"
             className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4"
+            loading="eager"
+            retryCount={3}
           />
           <h1 className="text-2xl sm:text-3xl font-bold text-white">
             <span className="text-yellow-600">Thrust</span> Fitness

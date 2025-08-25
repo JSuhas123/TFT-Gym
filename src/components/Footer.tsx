@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Award, Heart, Instagram, Shield } from 'lucide-react';
 import { useEffect, useRef, } from 'react';
 import * as THREE from 'three';
+import OptimizedImage from './OptimizedImage';
 
 export const Footer = () => {
   const mountRef = useRef<HTMLDivElement | null>(null);
@@ -163,12 +164,14 @@ export const Footer = () => {
   transition={{ duration: 0.6 }}
   className="flex flex-col items-center mb-6"
 >
-  <img
+  <OptimizedImage
     src="/logo1.png" 
-    alt="Thrust Fitness Logo"
+    alt="Thrust Fit Tribe Logo"
     className="w-32 h-32 mb-6 drop-shadow-2xl"
+    loading="eager"
+    retryCount={3}
   />
-  <h2 className="text-4xl font-extrabold">Thrust Fitness</h2>
+  <h2 className="text-4xl font-extrabold">Thrust Fit Tribe</h2>
   <p className="text-yellow-400 text-xl font-medium">Transform. Achieve. Repeat.</p>
 </motion.div>
 
@@ -219,7 +222,7 @@ export const Footer = () => {
         {/* Bottom */}
         <div className="border-t border-gray-700/50 pt-6 w-full">
           <p className="text-gray-400 text-sm mb-2">
-            © 2025 Thrust Fitness. All rights reserved. | Privacy Policy | Terms of Service
+            © 2025 Thrust Fit Tribe. All rights reserved. | Privacy Policy | Terms of Service
           </p>
           <p className="text-gray-400 text-sm">
             Made with ❤️ by{' '}

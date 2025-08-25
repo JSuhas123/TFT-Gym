@@ -5,11 +5,10 @@ import { LoadingPage } from './components/LoadingPage';
 import { PageLayout } from './components/PageLayout';
 
 // Lazy load pages for better performance
-const HomePage = lazy(() => import('./pages/HomePage').then(module => ({ default: module.HomePage })));
+const HomePage = lazy(() => import('./pages/HomePage'));
 const AboutPage = lazy(() => import('./pages/AboutPage').then(module => ({ default: module.AboutPage })));
 const TrainersPage = lazy(() => import('./pages/TrainersPage').then(module => ({ default: module.TrainersPage })));
-const ClassesPage = lazy(() => import('./pages/ClassesPage').then(module => ({ default: module.ClassesPage })));
-const NutritionPage = lazy(() => import('./pages/NutritionPage').then(module => ({ default: module.NutritionPage })));
+const NutritionPage = lazy(() => import('./pages/NutritionPage'));
 const GalleryPage = lazy(() => import('./pages/GalleryPage').then(module => ({ default: module.GalleryPage })));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 
@@ -34,21 +33,12 @@ class ErrorBoundary extends Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center text-center">
-          <div>
-            <h1 className="text-3xl font-bold text-white mb-4">Oops! Something went wrong</h1>
-            <p className="text-gray-400 mb-6">We're sorry for the inconvenience. Please refresh the page.</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded transition-colors"
-            >
-              Refresh Page
-            </button>
-          </div>
+        <div className="min-h-screen flex items-center justify-center bg-black text-white">
+          <h1 className="text-3xl font-bold mb-4">Something went wrong.</h1>
+          <p className="text-lg">Please refresh the page or try again later.</p>
         </div>
       );
     }
-
     return this.props.children;
   }
 }
@@ -86,14 +76,6 @@ function App() {
                 element={
                   <PageLayout onLogin={handleLogin}>
                     <TrainersPage />
-                  </PageLayout>
-                } 
-              />
-              <Route 
-                path="/classes" 
-                element={
-                  <PageLayout onLogin={handleLogin}>
-                    <ClassesPage />
                   </PageLayout>
                 } 
               />

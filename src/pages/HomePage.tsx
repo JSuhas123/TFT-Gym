@@ -1,235 +1,383 @@
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { FaPlay } from 'react-icons/fa';
+import * as THREE from 'three';
 import Hero from '../components/Hero';
 
 export const HomePage: React.FC = () => {
+  const mountRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<THREE.Scene | null>(null);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+
   const facilities = [
     {
       title: "Premium Gym",
       description: "State-of-the-art equipment and free weights",
       icon: "🏋️‍♂️",
-      gradient: "from-blue-600 to-purple-700"
-    },
-    {
-      title: "Swimming Pool",
-      description: "Olympic-sized pool with lane swimming",
-      icon: "🏊‍♀️",
-      gradient: "from-cyan-500 to-blue-600"
-    },
-    {
-      title: "Yoga Studio",
-      description: "Peaceful space for mind-body wellness",
-      icon: "🧘‍♀️",
-      gradient: "from-green-500 to-emerald-600"
+      gradient: "from-yellow-400 to-amber-600"
     },
     {
       title: "Cardio Zone",
       description: "Latest treadmills, bikes & ellipticals",
       icon: "🏃‍♂️",
-      gradient: "from-red-500 to-pink-600"
+      gradient: "from-yellow-500 to-amber-500"
     },
     {
       title: "Spa & Sauna",
       description: "Recovery and relaxation facilities",
       icon: "🧖‍♀️",
-      gradient: "from-amber-500 to-orange-600"
+      gradient: "from-yellow-400 to-amber-400"
     },
-    {
-      title: "Personal Training",
-      description: "One-on-one expert guidance",
-      icon: "💪",
-      gradient: "from-purple-600 to-indigo-700"
-    }
   ];
+
+  useEffect(() => {
+    if (!mountRef.current) return;
+
+    // Scene setup
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x000000, 10, 100);
+    
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0.1);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    
+    mountRef.current.appendChild(renderer.domElement);
+    sceneRef.current = scene;
+    rendererRef.current = renderer;
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffd700, 0.2);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffd700, 1);
+    directionalLight.position.set(50, 50, 50);
+    directionalLight.castShadow = true;
+    scene.add(directionalLight);
+
+    // Particle system
+    const particleGeometry = new THREE.BufferGeometry();
+    const particleCount = 2000;
+    const positions = new Float32Array(particleCount * 3);
+    
+    for (let i = 0; i < particleCount * 3; i++) {
+      positions[i] = (Math.random() - 0.5) * 200;
+    }
+    
+    particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    
+    const particleMaterial = new THREE.PointsMaterial({
+      color: 0xffd700,
+      size: 0.5,
+      transparent: true,
+      opacity: 0.6
+    });
+    
+    const particles = new THREE.Points(particleGeometry, particleMaterial);
+    scene.add(particles);
+
+    // Floating geometric shapes
+    const shapes: THREE.Mesh[] = [];
+    for (let i = 0; i < 20; i++) {
+      const geometry = Math.random() > 0.5 ? 
+        new THREE.BoxGeometry(2, 2, 2) : 
+        new THREE.OctahedronGeometry(1.5);
+      
+      const material = new THREE.MeshPhongMaterial({
+        color: 0xffd700,
+        transparent: true,
+        opacity: 0.3,
+        wireframe: true
+      });
+      
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set(
+        (Math.random() - 0.5) * 100,
+        (Math.random() - 0.5) * 50,
+        (Math.random() - 0.5) * 100
+      );
+      mesh.rotation.set(
+        Math.random() * Math.PI,
+        Math.random() * Math.PI,
+        Math.random() * Math.PI
+      );
+      shapes.push(mesh);
+      scene.add(mesh);
+    }
+
+    camera.position.z = 30;
+    camera.position.y = 10;
+
+    // Animation loop
+    const animate = () => {
+      requestAnimationFrame(animate);
+      
+      // Rotate particles
+      particles.rotation.x += 0.001;
+      particles.rotation.y += 0.002;
+      
+      // Animate floating shapes
+      shapes.forEach((shape, index) => {
+        shape.rotation.x += 0.01;
+        shape.rotation.y += 0.01;
+        shape.position.y += Math.sin(Date.now() * 0.001 + index) * 0.02;
+      });
+      
+      renderer.render(scene, camera);
+    };
+    
+    animate();
+
+    // Handle resize
+    const handleResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    
+    window.addEventListener('resize', handleResize);
+
+    // Store current mount element for cleanup
+    const currentMount = mountRef.current;
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (currentMount && renderer.domElement) {
+        currentMount.removeChild(renderer.domElement);
+      }
+      renderer.dispose();
+    };
+  }, []);
+
+  // Replace with your desired YouTube video ID
+  const youtubeVideoId = "dQw4w9WgXcQ";
 
   return (
     <main className="bg-black min-h-screen">
       <Hero />
 
-      {/* Video Section */}
-      <section className="relative py-20 bg-gradient-to-b from-black to-gray-900">
-        <div className="max-w-6xl mx-auto px-4">
+      {/* YouTube Video Section */}
+      <section className="py-24 bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white relative overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0">
           <motion.div
+            className="absolute top-0 left-0 w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl"
+            animate={{
+              x: [0, 100, 0],
+              y: [0, -50, 0],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{ duration: 10, repeat: Infinity }}
+          />
+          <motion.div
+            className="absolute bottom-0 right-0 w-80 h-80 bg-yellow-400/5 rounded-full blur-3xl"
+            animate={{
+              x: [0, -80, 0],
+              y: [0, 60, 0],
+              scale: [1.2, 1, 1.2],
+            }}
+            transition={{ duration: 8, repeat: Infinity, delay: 2 }}
+          />
+        </div>
+        
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            className="text-center mb-16"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
           >
-            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
-              Experience Excellence
-            </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Take a virtual tour of our world-class facilities and see why we're the premier fitness destination
+            <motion.h2 
+              className="text-5xl font-black mb-6"
+              whileHover={{ scale: 1.02 }}
+            >
+              See Our Gym in <span className="text-yellow-400">Action</span>
+            </motion.h2>
+            <p className="text-xl text-gray-300 font-light max-w-3xl mx-auto">
+              Take a virtual tour of our state-of-the-art facilities and witness the energy that drives our community
             </p>
           </motion.div>
-          
+
           <motion.div
+            className="relative max-w-4xl mx-auto"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
-            className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-yellow-500/20"
+            whileHover={{ scale: 1.02 }}
           >
-            <div className="aspect-video bg-gray-800 flex items-center justify-center">
-              {/* Replace with your actual YouTube embed */}
-              <div className="text-center">
-                <div className="w-20 h-20 bg-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
-                </div>
-                <p className="text-gray-400">YouTube Video Embed Goes Here</p>
-                <p className="text-sm text-gray-500 mt-2">Replace this div with your YouTube iframe</p>
+            {/* Video Container with enhanced styling */}
+            <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 p-4 rounded-3xl shadow-2xl">
+              <motion.div
+                className="absolute -inset-1 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400 rounded-3xl opacity-30"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              />
+              
+              <div className="relative bg-black rounded-2xl overflow-hidden aspect-video shadow-inner">
+                {/* YouTube Embed */}
+                <iframe
+                  src={`https://www.youtube.com/embed/${youtubeVideoId}?rel=0&modestbranding=1&showinfo=0&controls=1&autoplay=0`}
+                  title="Bolt Fitness Gym Tour"
+                  className="w-full h-full"
+                  style={{ border: 'none' }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+                
+                {/* Play Button Overlay (optional - for custom styling) */}
+                <motion.div
+                  className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                  whileHover={{ opacity: 1 }}
+                >
+                  <motion.div
+                    className="bg-yellow-400 p-6 rounded-full shadow-2xl"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <FaPlay className="h-8 w-8 text-black ml-1" />
+                  </motion.div>
+                </motion.div>
               </div>
+              
+              {/* Corner accents */}
+              <div className="absolute top-8 left-8 w-4 h-4 border-l-2 border-t-2 border-yellow-400 rounded-tl-lg" />
+              <div className="absolute top-8 right-8 w-4 h-4 border-r-2 border-t-2 border-yellow-400 rounded-tr-lg" />
+              <div className="absolute bottom-8 left-8 w-4 h-4 border-l-2 border-b-2 border-yellow-400 rounded-bl-lg" />
+              <div className="absolute bottom-8 right-8 w-4 h-4 border-r-2 border-b-2 border-yellow-400 rounded-br-lg" />
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* Facilities Grid Section */}
-      <section className="py-20 bg-gradient-to-b from-gray-900 to-black">
-        <div className="max-w-7xl mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              World-Class Facilities
-            </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Discover our premium amenities designed to elevate your fitness journey
-            </p>
-          </motion.div>
+      <section className="relative py-20 bg-black overflow-hidden">
+      {/* Three.js Background */}
+      <div 
+        ref={mountRef} 
+        className="absolute inset-0 z-0"
+        style={{ pointerEvents: 'none' }}
+      />
+      
+      {/* Overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/30 z-10" />
+      
+      {/* Grid Pattern Overlay */}
+      <div className="absolute inset-0 z-10 opacity-20">
+        <div 
+          className="w-full h-full" 
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255, 212, 0, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 212, 0, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '50px 50px'
+          }}
+        />
+      </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {facilities.map((facility, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="group relative"
-              >
-                <div className={`bg-gradient-to-br ${facility.gradient} p-8 rounded-3xl shadow-2xl transform group-hover:scale-105 transition-all duration-500 border border-white/10 backdrop-blur-sm`}>
-                  <div className="text-center">
-                    <div className="text-6xl mb-6 transform group-hover:scale-110 transition-transform duration-300">
-                      {facility.icon}
-                    </div>
-                    <h3 className="text-2xl font-bold text-white mb-4">
-                      {facility.title}
-                    </h3>
-                    <p className="text-gray-200 text-lg mb-6">
-                      {facility.description}
-                    </p>
-                    <button className="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-2xl font-semibold backdrop-blur-sm border border-white/20 transition-all duration-300 transform hover:scale-105">
-                      Learn More
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Enhanced Testimonials Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-yellow-600 rounded-full filter blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-600 rounded-full filter blur-3xl"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
-              Success Stories
-            </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Real transformations from our incredible community members
-            </p>
-          </motion.div>
+      <div className="relative z-20 max-w-7xl mx-auto px-4">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-300 to-amber-400 mb-6 leading-tight">
+            WORLD-CLASS FACILITIES
+          </h2>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto font-light">
+            Discover our premium amenities designed to elevate your fitness journey
+          </p>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Priyanka",
-                role: "Software Engineer",
-                image: "P",
-                testimonial: "The best gym experience I've ever had! The trainers are incredibly supportive and the equipment is absolutely top-notch. I've never felt stronger!",
-                rating: 5,
-                gradient: "from-pink-500 to-purple-600"
-              },
-              {
-                name: "Rahul Kumar",
-                role: "Manager",
-                image: "R",
-                testimonial: "Super clean facilities, and an amazing community vibe. The variety of classes and equipment keeps my workouts exciting. I genuinely look forward to coming here every day!",
-                rating: 5,
-                gradient: "from-blue-500 to-cyan-600"
-              },
-              {
-                name: "Anjali Patel",
-                role: "Doctor",
-                image: "A",
-                testimonial: "The personal training sessions transformed my fitness journey completely. The nutrition guidance and recovery facilities are exceptional. Worth every penny!",
-                rating: 5,
-                gradient: "from-green-500 to-emerald-600"
-              }
-            ].map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                viewport={{ once: true }}
-                className="group"
-              >
-                <div className="bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/10 transform group-hover:scale-105 transition-all duration-500 h-full">
-                  <div className="flex items-center mb-6">
-                    <div className={`w-16 h-16 bg-gradient-to-br ${testimonial.gradient} rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg`}>
-                      {testimonial.image}
-                    </div>
-                    <div className="ml-4">
-                      <div className="text-white font-bold text-lg">{testimonial.name}</div>
-                      <div className="text-gray-400 text-sm">{testimonial.role}</div>
-                    </div>
-                  </div>
-                  
-                  <div className="mb-6">
-                    <div className="flex text-yellow-400 mb-4 text-lg">
-                      {"★".repeat(testimonial.rating)}
-                    </div>
-                    <p className="text-gray-300 italic leading-relaxed text-lg">
-                      "{testimonial.testimonial}"
-                    </p>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-500 font-semibold">VERIFIED MEMBER</span>
-                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+          {/* Animated underline */}
+          <div className="relative mt-8">
+            <div className="w-32 h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent mx-auto">
+              <div className="w-full h-full bg-gradient-to-r from-yellow-400 to-amber-400 animate-pulse" />
+            </div>
           </div>
         </div>
-      </section>
+        <div className="grid md:grid-cols-3 gap-8">
+          {facilities.map((facility, index) => (
+            <button
+              key={facility.title}
+              className="group relative perspective-1000 text-left w-full"
+              aria-label={`Learn more about ${facility.title}`}
+            >
+              {/* Multi-layer glow effect */}
+              <div 
+                className={`absolute -inset-0.5 bg-gradient-to-r ${facility.gradient} rounded-3xl blur-sm opacity-40 group-hover:opacity-100 transition-all duration-700 animate-pulse`}
+              />
+              <div 
+                className={`absolute -inset-1 bg-gradient-to-br ${facility.gradient} rounded-3xl blur-md opacity-20 group-hover:opacity-60 transition-all duration-500`}
+              />
+              
+              {/* Main Card */}
+              <div className="relative bg-gradient-to-br from-black via-gray-900 to-black backdrop-blur-2xl border border-yellow-400/30 rounded-3xl p-8 transform-gpu group-hover:scale-[1.02] group-hover:rotate-y-2 transition-all duration-700 hover:border-yellow-400/80 group-hover:shadow-2xl group-hover:shadow-yellow-400/25 overflow-hidden">
+                
+                {/* Animated background pattern */}
+                <div className="absolute inset-0 opacity-5">
+                  <div 
+                    className="w-full h-full"
+                    style={{
+                      backgroundImage: `
+                        radial-gradient(circle at 25% 25%, rgba(255, 212, 0, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 75% 75%, rgba(255, 212, 0, 0.2) 0%, transparent 50%)
+                      `
+                    }}
+                  />
+                </div>
+
+                {/* Hexagon decorative element */}
+                <div className="absolute top-4 right-4 w-12 h-12">
+                  <div className="w-full h-full border-2 border-yellow-400/30 transform rotate-45 rounded-lg group-hover:rotate-90 group-hover:border-yellow-400/70 transition-all duration-500" />
+                </div>
+
+                {/* Content */}
+                <div className="relative z-10">
+                  {/* Icon section */}
+                  <div className="text-center mb-6">
+                    <div className="relative inline-block">
+                      {/* Icon glow */}
+                      <div className={`absolute inset-0 bg-gradient-to-r ${facility.gradient} rounded-full blur-xl opacity-50 group-hover:opacity-80 transition-opacity duration-500`} />
+                      
+                      {/* Icon container */}
+                      <div className="relative bg-gradient-to-br from-yellow-400/20 to-amber-600/20 p-6 rounded-3xl border border-yellow-400/30 group-hover:border-yellow-400/60 transition-all duration-500 backdrop-blur-sm">
+                        <div className="text-5xl transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 drop-shadow-2xl">
+                          {facility.icon}
+                        </div>
+                      </div>
+                      
+                      {/* Floating accent */}
+                      <div className={`absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gradient-to-r ${facility.gradient} rounded-full blur-sm group-hover:w-24 transition-all duration-500`} />
+                    </div>
+                  </div>
+                  
+                  {/* Title */}
+                  <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-400 mb-4 text-center group-hover:from-yellow-300 group-hover:to-yellow-500 transition-all duration-300">
+                    {facility.title}
+                  </h3>
+                  
+                  {/* Description */}
+                  <p className="text-gray-300 group-hover:text-gray-200 text-center mb-8 leading-relaxed transition-colors duration-300">
+                    {facility.description}
+                  </p>
+                </div>
+
+                {/* Card number indicator */}
+                <div className="absolute top-6 left-6 text-yellow-400/40 font-mono text-lg font-bold">
+                  0{index + 1}
+                </div>
+
+                {/* Animated corner accents */}
+                <div className="absolute top-0 left-0 w-8 h-8 border-l-3 border-t-3 border-yellow-400/40 group-hover:border-yellow-400/80 transition-colors duration-300" />
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-r-3 border-b-3 border-yellow-400/40 group-hover:border-yellow-400/80 transition-colors duration-300" />
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
 
       {/* Enhanced Call to Action Section */}
       <section className="relative py-20 overflow-hidden">
@@ -257,7 +405,7 @@ export const HomePage: React.FC = () => {
             </h2>
             
             <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed">
-              Join thousands of members who have discovered their strongest, healthiest selves at Thrust Fitness. Your transformation journey starts with a single step.
+              Join thousands of members who have discovered their strongest, healthiest selves at Thrust Fit Tribe. Your transformation journey starts with a single step.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">

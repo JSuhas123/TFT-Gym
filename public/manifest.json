@@ -1,6 +1,6 @@
 {
-  "name": "Thrust Fitness Bangalore",
-  "short_name": "Thrust Fitness",
+  "name": "Thrust Fit Tribe Bangalore",
+  "short_name": "Thrust Fit Tribe",
   "description": "Premier fitness center in Jai Bharath Nagar, Baiyappanahalli, with expert trainers and top-notch equipment.",
   "start_url": "/",
   "display": "standalone",
@@ -60,7 +60,7 @@
       "sizes": "1280x720",
       "type": "image/png",
       "platform": "wide",
-      "label": "Thrust Fitness Gym"
+      "label": "Thrust Fit Tribe Gym"
     }
   ],
   "shortcuts": [

@@ -63,7 +63,7 @@ export const Hero: React.FC = () => {
           onLoadedData={() => setVideoLoaded(true)}
           onError={() => setVideoError(true)}
         >
-          <source src="/heropage.mp4" type="video/mp4" />
+          <source src="/TFTPage.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         <div className="absolute inset-0 bg-black bg-opacity-60" />
@@ -135,7 +135,7 @@ export const Hero: React.FC = () => {
             Thrust
           </motion.span>{' '}
           <br className="sm:hidden" />
-          Fitness
+          Fit Tribe
         </motion.h1>
 
         <motion.div

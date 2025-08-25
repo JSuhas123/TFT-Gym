@@ -146,7 +146,7 @@ export default function ContactPage() {
         <MapPin size={16} className="text-white sm:w-5 sm:h-5 md:w-6 md:h-6" />
       </div>
       <div className="min-w-0 flex-1">
-        <h3 className="text-sm sm:text-base md:text-lg font-bold mb-1 sm:mb-2 text-white">Thrust Fitness Center</h3>
+        <h3 className="text-sm sm:text-base md:text-lg font-bold mb-1 sm:mb-2 text-white">Thrust Fit Tribe Center</h3>
         <p className="text-gray-300 text-xs sm:text-sm mb-1 break-words">
           6, Dodda Banaswadi Main Rd, near Orion Avenue Mall
         </p>

@@ -1,4 +1,4 @@
-# Thrust Fitness - Deployment Guide
+# Thrust Fit Tribe - Deployment Guide
 
 ## 🚀 Vercel Deployment Instructions
 
@@ -124,7 +124,7 @@ npm run dev          # Development server
 
 ## ✅ Ready for Production!
 
-Your Thrust Fitness website is now optimized and ready for deployment with:
+Your Thrust Fit Tribe website is now optimized and ready for deployment with:
 - ⚡ Fast video loading
 - 🔄 Unlimited page refreshes
 - 📱 Mobile-optimized

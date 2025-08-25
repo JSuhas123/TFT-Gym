@@ -43,7 +43,7 @@ export const AboutPage: React.FC = () => {
             transition={{ duration: 0.8 }}
             className="text-4xl md:text-6xl font-bold mb-6"
           >
-            About <span className="text-yellow-600">Thrust Fitness</span>
+            About <span className="text-yellow-600">Thrust Fit Tribe</span>
           </motion.h1>
           <motion.p
             initial={{ y: 30, opacity: 0 }}
@@ -57,7 +57,7 @@ export const AboutPage: React.FC = () => {
       </section>
 
       {/* Story Section */}
-      <section className="py-20 bg-gray-900">
+      <section className="min-h-[50vh] bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div

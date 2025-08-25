@@ -107,7 +107,7 @@ image: '/Vinod.JPG'     // ✅ Correct public path
 
 ## 🎉 **DEPLOYMENT READY!**
 
-Your Thrust Fitness website is now fully optimized for Vercel deployment with:
+Your Thrust Fit Tribe website is now fully optimized for Vercel deployment with:
 - ✅ All image paths corrected
 - ✅ Error handling implemented  
 - ✅ Performance optimizations

@@ -27,7 +27,7 @@ export const TrainersPage: React.FC = () => {
       specialty: 'Fat Loss & Nutrition',
       experience: '3+ years',
       certifications: ['Certified Trainer'],
-      image: 'https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=400',
+      image: getTrainerImage('Karan'),
       bio: 'Young and dynamic trainer specializing in fat loss and nutrition guidance to help clients transform effectively.'
     },
     {
@@ -93,7 +93,7 @@ export const TrainersPage: React.FC = () => {
               >
                 <OptimizedImage
                   src={trainer.image}
-                  alt={`${trainer.name} - Expert Trainer at Thrust Fitness & Training`}
+                  alt={`${trainer.name} - Expert Trainer at Thrust Fit Tribe & Training`}
                   className="w-full h-64 object-cover"
                   retryCount={3}
                 />

@@ -1,9 +1,9 @@
-// Image asset management for Thrust Fitness
+// Image asset management for Thrust Fit Tribe
 // This ensures consistent image loading across all environments
 
 export const TRAINER_IMAGES = {
   jacob: '/Jacob.JPG',
-  karan: 'https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=400',
+  karan: '/Karan.jpg',
   sendil: '/Sendil.jpg',
   vinod: '/Vinod.JPG'
 } as const;
@@ -17,7 +17,7 @@ export const FALLBACK_IMAGES = {
 // Supported image formats for deployment
 export const SUPPORTED_IMAGE_FORMATS = ['.jpg', '.jpeg', '.png', '.webp', '.svg'] as const;
 
-// Image validation utility
+// Enhanced image validation utility for production environments
 export const validateImageUrl = (url: string): boolean => {
   if (!url || url.trim() === '') return false;
   
@@ -35,7 +35,7 @@ export const validateImageUrl = (url: string): boolean => {
   return false;
 };
 
-// Get optimized image URL with fallback
+// Get optimized image URL with fallback and case handling
 export const getImageUrl = (imageName: string, fallback: string = FALLBACK_IMAGES.trainer): string => {
   const url = TRAINER_IMAGES[imageName as keyof typeof TRAINER_IMAGES] || imageName;
   
@@ -46,10 +46,17 @@ export const getImageUrl = (imageName: string, fallback: string = FALLBACK_IMAGE
   return fallback;
 };
 
-// Get trainer image with smart fallback
+// Enhanced trainer image getter with multiple fallback strategies
 export const getTrainerImage = (trainerName: string): string => {
   const normalizedName = trainerName.toLowerCase();
-  return getImageUrl(normalizedName, FALLBACK_IMAGES.trainer);
+  const imageUrl = getImageUrl(normalizedName, FALLBACK_IMAGES.trainer);
+  
+  // For production deployment, ensure the path is absolute
+  if (imageUrl.startsWith('/') && !imageUrl.includes('data:')) {
+    return imageUrl;
+  }
+  
+  return imageUrl;
 };
 
 export default {

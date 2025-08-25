@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import logo from '/logo1.png';
 
 import { Link, useLocation } from 'react-router-dom';
+import OptimizedImage from './OptimizedImage';
 
 const Navigation: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,7 +14,7 @@ const Navigation: React.FC = () => {
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
     { name: 'Trainers', path: '/trainers' },
-    { name: 'Classes', path: '/classes' },
+    { name: 'Nutrition', path: '/nutrition' },
     { name: 'Gallery', path: '/gallery' },
     { name: 'Contact', path: '/contact' }
   ];
@@ -24,12 +25,14 @@ const Navigation: React.FC = () => {
         <div className="flex justify-between items-center py-2">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
-          <img
+          <OptimizedImage
               src={logo}
-              alt="Thrust Fitness Logo"
+              alt="Thrust Fit Tribe Logo"
               className="h-20 w-20 object-cover shadow-lg"
+              loading="eager"
+              retryCount={3}
           />
-          <span className="text-white text-xl font-bold">Thrust Fitness</span>
+          <span className="text-white text-xl font-bold">Thrust Fit Tribe</span>
           </Link>
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">

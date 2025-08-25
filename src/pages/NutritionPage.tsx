@@ -1,197 +1,343 @@
 import { motion } from 'framer-motion';
-import { Apple, TrendingUp, Users, Utensils } from 'lucide-react';
-import React from 'react';
+import { Apple } from 'lucide-react';
+import Enhanced3DScene from '../components/3D/Enhanced3DScene';
+import EnhancedFloatingElements from '../components/3D/EnhancedFloatingElements';
+import NutritionForm from '../components/forms/NutritionForm';
 
-export const NutritionPage: React.FC = () => {
-  const services = [
+const NutritionPage = () => {
+  const nutritionTips = [
     {
-      icon: Apple,
-      title: 'Personalized Meal Plans',
-      description: 'Custom nutrition plans tailoyellow to your fitness goals and dietary preferences.',
-      features: ['Goal-specific nutrition', 'Dietary restrictions accommodated', 'Weekly meal prep guides', 'Shopping lists included']
+      id: 'pre-workout',
+      title: 'Pre-Workout Fuel',
+      content: 'Consume a balanced meal 2-3 hours before training, including complex carbs and lean protein.',
+      icon: '⚡',
+      color: 'bg-blue-100 text-blue-800'
     },
     {
-      icon: Utensils,
-      title: 'Nutrition Coaching',
-      description: 'One-on-one coaching sessions with our registeyellow dietitians.',
-      features: ['Individual consultations', 'Progress tracking', 'Habit formation', 'Ongoing support']
+      id: 'post-workout',
+      title: 'Post-Workout Recovery',
+      content: 'Within 30 minutes post-workout, eat protein and carbs in a 3:1 ratio for optimal recovery.',
+      icon: '🏃‍♂️',
+      color: 'bg-green-100 text-green-800'
     },
     {
-      icon: TrendingUp,
-      title: 'Body Composition Analysis',
-      description: 'Advanced body composition testing to track your progress accurately.',
-      features: ['DEXA scan available', 'InBody analysis', 'Progress photos', 'Measurement tracking']
+      id: 'hydration',
+      title: 'Hydration Matters',
+      content: 'Drink at least 8-10 glasses of water daily, more during intense training sessions.',
+      icon: '💧',
+      color: 'bg-cyan-100 text-cyan-800'
     },
     {
-      icon: Users,
-      title: 'Group Nutrition Workshops',
-      description: 'Educational workshops covering various nutrition topics and cooking skills.',
-      features: ['Monthly workshops', 'Cooking demonstrations', 'Q&A sessions', 'Recipe sharing']
+      id: 'timing',
+      title: 'Meal Timing',
+      content: 'Eat smaller, frequent meals throughout the day to maintain stable energy levels.',
+      icon: '⏰',
+      color: 'bg-purple-100 text-purple-800'
+    },
+    {
+      id: 'balance',
+      title: 'Macronutrient Balance',
+      content: 'Aim for 40% carbs, 30% protein, and 30% healthy fats for optimal body composition.',
+      icon: '⚖️',
+      color: 'bg-orange-100 text-orange-800'
+    },
+    {
+      id: 'supplements',
+      title: 'Smart Supplementation',
+      content: 'Focus on whole foods first, use supplements to fill specific nutritional gaps.',
+      icon: '💊',
+      color: 'bg-pink-100 text-pink-800'
     }
   ];
 
-  const tips = [
+  const benefits = [
     {
-      title: 'Hydration is Key',
-      description: 'Drink at least 8-10 glasses of water daily to support your metabolism and recovery.',
-      image: 'https://images.pexels.com/photos/416528/pexels-photo-416528.jpeg?auto=compress&cs=tinysrgb&w=400'
+      id: 'personalized',
+      title: 'Personalized Recommendations',
+      description: 'Get nutrition advice tailored to your specific goals, lifestyle, and dietary preferences.',
+      icon: '🎯'
     },
     {
-      title: 'Protein Timing',
-      description: 'Consume protein within 30 minutes post-workout for optimal muscle recovery.',
-      image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400'
+      id: 'science-based',
+      title: 'Science-Based Approach',
+      description: 'Our recommendations are backed by the latest nutrition research and evidence.',
+      icon: '🔬'
     },
     {
-      title: 'Balanced Macros',
-      description: 'Aim for a balance of carbohydrates, proteins, and healthy fats in every meal.',
-      image: 'https://images.pexels.com/photos/1640770/pexels-photo-1640770.jpeg?auto=compress&cs=tinysrgb&w=400'
+      id: 'expert-guidance',
+      title: 'Expert Guidance',
+      description: 'Developed by certified nutritionists and sports dietitians.',
+      icon: '👨‍⚕️'
     },
     {
-      title: 'Meal Prep Success',
-      description: 'Prepare meals in advance to stay consistent with your nutrition goals.',
-      image: 'https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg?auto=compress&cs=tinysrgb&w=400'
+      id: 'practical',
+      title: 'Practical & Actionable',
+      description: 'Easy-to-follow meal plans and tips that fit into your busy lifestyle.',
+      icon: '✅'
+    },
+    {
+      id: 'goal-oriented',
+      title: 'Goal-Oriented',
+      description: 'Whether losing weight, gaining muscle, or improving performance, we have you covered.',
+      icon: '🏆'
+    },
+    {
+      id: 'sustainable',
+      title: 'Sustainable Results',
+      description: 'Focus on long-term healthy habits rather than quick fixes.',
+      icon: '🌱'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="pt-16 sm:pt-20">
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-32">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
-          style={{
-            backgroundImage: 'url(https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1920)',
-          }}
-        />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.h1
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
+      <section className="relative py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-green-900 via-black to-green-900 text-white overflow-hidden">
+        {/* 3D Background */}
+        <Enhanced3DScene className="absolute inset-0 w-full h-full opacity-20" intensity="high" />
+        
+        {/* Floating Elements */}
+        <EnhancedFloatingElements variant="nutrition" />
+        
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.h1 
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-4xl md:text-6xl font-bold mb-6"
           >
-            Nutrition <span className="text-yellow-600">Services</span>
-          </motion.h1>
-          <motion.p
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl text-gray-300 max-w-3xl mx-auto"
-          >
-            Fuel your fitness journey with expert nutrition guidance and personalized meal planning.
-          </motion.p>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {services.map((service, index) => (
+            Fuel Your <motion.span 
+              className="text-yellow-400 relative"
+              whileHover={{ scale: 1.05 }}
+            >
+              Success
               <motion.div
-                key={service.title}
-                initial={{ y: 50, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-gray-900 rounded-lg p-8 hover:bg-gray-800 transition-colors duration-300"
-              >
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-600 rounded-full mb-6">
-                  <service.icon size={32} className="text-white" />
-                </div>
-                <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
-                <p className="text-gray-300 mb-6 leading-relaxed">{service.description}</p>
-                <ul className="space-y-2">
-                  {service.features.map((feature) => (
-                    <li key={feature} className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-yellow-600 rounded-full" />
-                      <span className="text-gray-400">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
+                className="absolute -inset-2 bg-yellow-400/20 rounded-lg -z-10"
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  opacity: [0.2, 0.5, 0.2] 
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+            </motion.span>
+          </motion.h1>
+          
+          <motion.p 
+            className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+          >
+            Unlock your potential with personalized nutrition guidance designed to complement your fitness journey 
+            and accelerate your results.
+          </motion.p>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="flex items-center justify-center space-x-2 bg-yellow-400/10 backdrop-blur-sm border border-yellow-400/30 rounded-lg p-4 inline-block"
+          >
+            <Apple className="h-5 w-5 text-yellow-400" />
+            <p className="text-yellow-300 font-semibold">Expert nutrition coaching included with Premium & Elite memberships</p>
+          </motion.div>
         </div>
       </section>
 
-      {/* Nutrition Tips Section */}
-      <section className="py-20 bg-gray-900">
+      {/* Benefits Section */}
+      <section className="py-16 sm:py-20 bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Nutrition Tips</h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Expert advice to help you make better nutrition choices and achieve your fitness goals.
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Why Choose Our Nutrition Guidance?</h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+              Science-backed nutrition strategies designed to optimize your health and performance.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {tips.map((tip, index) => (
-              <motion.div
-                key={tip.title}
-                initial={{ y: 50, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {benefits.map((benefit, index) => (
+              <motion.div 
+                key={benefit.id} 
+                className="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-all duration-300 group"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
                 viewport={{ once: true }}
-                className="bg-black rounded-lg overflow-hidden hover:transform hover:scale-105 transition-all duration-300"
+                whileHover={{ y: -5 }}
               >
-                <img
-                  src={tip.image}
-                  alt={tip.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-6">
-                  <h3 className="text-lg font-bold mb-3">{tip.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{tip.description}</p>
-                </div>
+                <motion.div 
+                  className="text-3xl mb-4 group-hover:scale-110 transition-transform duration-300"
+                  whileHover={{ rotate: [0, -10, 10, 0] }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {benefit.icon}
+                </motion.div>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">{benefit.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{benefit.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Consultation CTA */}
-      <section className="py-20">
+      {/* Nutrition Tips */}
+      <section className="py-16 sm:py-20 bg-gray-50 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-yellow-600 to-yellow-700 rounded-2xl p-12 text-center">
-            <motion.h2
-              initial={{ y: 30, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-4xl font-bold text-white mb-6"
-            >
-              Ready to Transform Your Nutrition?
-            </motion.h2>
-            <motion.p
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="text-xl text-yellow-100 mb-8 max-w-2xl mx-auto"
-            >
-              Book a consultation with our registeyellow dietitian and start your journey to better health today.
-            </motion.p>
-            <motion.button
-              initial={{ scale: 0.8, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-white text-yellow-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors duration-300"
-            >
-              Book Consultation
-            </motion.button>
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Essential Nutrition Tips</h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+              Science-backed strategies to optimize your nutrition for better performance and results.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {nutritionTips.map((tip, index) => (
+              <motion.div 
+                key={tip.id} 
+                className="bg-white p-6 rounded-lg hover:shadow-lg transition-all duration-300 group"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -5 }}
+              >
+                <motion.div 
+                  className="text-3xl mb-4 group-hover:scale-110 transition-transform duration-300"
+                  whileHover={{ rotate: [0, -10, 10, 0] }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {tip.icon}
+                </motion.div>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">{tip.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{tip.content}</p>
+                <motion.div 
+                  className={`inline-block px-2 py-1 rounded text-xs font-semibold mt-3 ${tip.color}`}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Expert Tip
+                </motion.div>
+              </motion.div>
+            ))}
           </div>
         </div>
+      </section>
+
+      {/* Meal Plans */}
+      <section className="py-16 sm:py-20 bg-white relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Personalized Meal Plans</h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+              Choose a nutrition plan tailored to your specific fitness goals and lifestyle.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Nutrition Guide Form */}
+      <section className="py-16 sm:py-20 bg-gray-50 relative overflow-hidden">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Get Your Personalized Nutrition Guide</h2>
+            <p className="text-lg sm:text-xl text-gray-600">
+              Unlock personalized nutrition recommendations with our comprehensive, science-based guide.
+            </p>
+          </motion.div>
+
+          <NutritionForm />
+        </div>
+      </section>
+      {/* CTA Section */}
+      <section className="py-16 sm:py-20 bg-gradient-to-r from-green-600 via-green-700 to-green-800 text-white relative overflow-hidden">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <motion.h2 
+            className="text-3xl sm:text-4xl font-bold mb-6"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            Ready to Transform Your Nutrition?
+          </motion.h2>
+          
+          <motion.p 
+            className="text-lg sm:text-xl mb-8 text-white/90"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            Work with our certified nutrition coaches to create a sustainable eating plan that supports your fitness goals.
+          </motion.p>
+          
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <motion.button 
+              className="bg-white text-green-700 py-3 px-8 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Book Nutrition Consultation
+            </motion.button>
+            <motion.button 
+              className="border-2 border-white text-white py-3 px-8 rounded-lg font-semibold hover:bg-white hover:text-green-700 transition-colors duration-200"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Learn More
+            </motion.button>
+          </motion.div>
+        </div>
+        
+        {/* Background animations */}
+        <motion.div
+          className="absolute top-10 right-10 w-32 h-32 bg-white/10 rounded-full"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.3, 0.1],
+          }}
+          transition={{ duration: 4, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute bottom-10 left-10 w-24 h-24 bg-white/10 rounded-full"
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.1, 0.2, 0.1],
+          }}
+          transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+        />
       </section>
     </div>
   );
 };
+
+export default NutritionPage;
