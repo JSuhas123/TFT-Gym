@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { Apple } from 'lucide-react';
-import Enhanced3DScene from '../components/3D/Enhanced3DScene';
 import EnhancedFloatingElements from '../components/3D/EnhancedFloatingElements';
 import NutritionForm from '../components/forms/NutritionForm';
 
@@ -93,8 +92,13 @@ const NutritionPage = () => {
     <div className="pt-16 sm:pt-20">
       {/* Hero Section */}
       <section className="relative py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-green-900 via-black to-green-900 text-white overflow-hidden">
-        {/* 3D Background */}
-        <Enhanced3DScene className="absolute inset-0 w-full h-full opacity-20" intensity="high" />
+        {/* Animated Background */}
+        <div className="absolute inset-0 w-full h-full opacity-20">
+          <div className="absolute inset-0 bg-gradient-to-br from-green-800/30 via-transparent to-yellow-600/20"></div>
+          <div className="absolute top-0 left-0 w-64 h-64 bg-green-500/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute top-1/2 right-0 w-96 h-96 bg-yellow-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+          <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-green-400/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+        </div>
         
         {/* Floating Elements */}
         <EnhancedFloatingElements variant="nutrition" />
