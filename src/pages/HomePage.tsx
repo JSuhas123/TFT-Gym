@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
+import { Play } from 'lucide-react';
 import React, { useEffect, useRef } from 'react';
-import { FaPlay } from 'react-icons/fa';
 import * as THREE from 'three';
 import Hero from '../components/Hero';
 
@@ -239,7 +239,7 @@ export const HomePage: React.FC = () => {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <FaPlay className="h-8 w-8 text-black ml-1" />
+                    <Play className="h-8 w-8 text-black ml-1" />
                   </motion.div>
                 </motion.div>
               </div>
