@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { AlertCircle, CheckCircle, Download, Users } from 'lucide-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNutritionAnalytics, useNutritionForm } from '../../hooks/useNutrition';
 import { FormInput, FormSelect, FormTextarea, LoadingSpinner, ProgressBar, SuccessMessage } from '../ui/FormComponents';
 
@@ -41,15 +41,63 @@ const NutritionForm: React.FC = () => {
     { value: 'extremely-active', label: 'Extremely Active (very hard exercise, physical job)' }
   ];
 
+  // Store submissions in localStorage (hidden from users)
+  const NUTRITION_STORAGE_KEY = 'nutrition_submissions_v1';
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (formData.fitnessGoal) {
       trackGoalSelection(formData.fitnessGoal);
     }
-    
+    // Save submission to localStorage (append, not overwrite)
+    try {
+      const prev = JSON.parse(localStorage.getItem(NUTRITION_STORAGE_KEY) || '[]');
+      const toStore = { ...formData, submittedAt: new Date().toISOString() };
+      localStorage.setItem(NUTRITION_STORAGE_KEY, JSON.stringify([...prev, toStore]));
+    } catch {
+      // fail silently if localStorage is not available
+    }
     await generateNutritionGuide();
   };
+
+  // Hidden admin-only export: Ctrl+Alt+N to download CSV
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'n') {
+        try {
+          const data = JSON.parse(localStorage.getItem(NUTRITION_STORAGE_KEY) || '[]');
+          if (!Array.isArray(data) || data.length === 0) return;
+          
+          // Convert to CSV with proper formatting
+          const keys = Object.keys(data[0]);
+          const csvHeader = keys.join(',');
+          const csvRows = data.map(row => 
+            keys.map(key => {
+              const value = String(row[key] ?? '').replace(/"/g, '""');
+              return `"${value}"`;
+            }).join(',')
+          );
+          const csv = [csvHeader, ...csvRows].join('\r\n');
+          
+          // Download CSV file
+          const blob = new Blob([csv], { type: 'text/csv' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `nutrition_submissions_${Date.now()}.csv`;
+          document.body.appendChild(link);
+          link.click();
+          setTimeout(() => {
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+          }, 100);
+        } catch {
+          // fail silently if export fails
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, []);
 
   const isEligible = analytics.availableGuides > 0;
 

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Nutrition Storage</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 10px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .result { margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 3px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Nutrition Form Storage Test</h1>
+    
+    <div class="test-section">
+        <h3>Test 1: Add Sample Nutrition Data</h3>
+        <button onclick="addSampleData()">Add Sample Submission</button>
+        <div id="addResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 2: View Stored Data</h3>
+        <button onclick="viewStoredData()">View All Submissions</button>
+        <div id="viewResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 3: Export CSV (Press Ctrl+Alt+N)</h3>
+        <p>Press <kbd>Ctrl+Alt+N</kbd> to test CSV export functionality</p>
+        <div id="exportResult" class="result">Waiting for keyboard shortcut...</div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 4: Clear All Data</h3>
+        <button onclick="clearData()">Clear All Submissions</button>
+        <div id="clearResult" class="result"></div>
+    </div>
+
+    <script>
+        const NUTRITION_STORAGE_KEY = 'nutrition_submissions_v1';
+        
+        function addSampleData() {
+            try {
+                const sampleData = {
+                    name: "Test User " + Math.floor(Math.random() * 1000),
+                    email: "testuser" + Math.floor(Math.random() * 1000) + "@example.com",
+                    phone: "555-" + Math.floor(Math.random() * 10000).toString().padStart(4, '0'),
+                    fitnessGoal: "weight-loss",
+                    age: 25 + Math.floor(Math.random() * 20),
+                    gender: "male",
+                    weight: 70 + Math.floor(Math.random() * 30),
+                    height: 170 + Math.floor(Math.random() * 20),
+                    activityLevel: "moderately-active",
+                    dietaryRestrictions: "No restrictions",
+                    submittedAt: new Date().toISOString()
+                };
+                
+                const prev = JSON.parse(localStorage.getItem(NUTRITION_STORAGE_KEY) || '[]');
+                localStorage.setItem(NUTRITION_STORAGE_KEY, JSON.stringify([...prev, sampleData]));
+                
+                document.getElementById('addResult').innerHTML = '<span class="success">✓ Sample data added successfully!</span>';
+                document.getElementById('addResult').className = 'result success';
+            } catch (error) {
+                document.getElementById('addResult').innerHTML = '<span class="error">✗ Error: ' + error.message + '</span>';
+                document.getElementById('addResult').className = 'result error';
+            }
+        }
+        
+        function viewStoredData() {
+            try {
+                const data = JSON.parse(localStorage.getItem(NUTRITION_STORAGE_KEY) || '[]');
+                const count = data.length;
+                
+                if (count === 0) {
+                    document.getElementById('viewResult').innerHTML = 'No submissions found.';
+                    document.getElementById('viewResult').className = 'result';
+                } else {
+                    let html = `<strong>Found ${count} submission(s):</strong><br><br>`;
+                    data.forEach((submission, index) => {
+                        html += `<strong>Submission ${index + 1}:</strong><br>`;
+                        html += `Name: ${submission.name}<br>`;
+                        html += `Email: ${submission.email}<br>`;
+                        html += `Goal: ${submission.fitnessGoal}<br>`;
+                        html += `Submitted: ${new Date(submission.submittedAt).toLocaleString()}<br><br>`;
+                    });
+                    document.getElementById('viewResult').innerHTML = html;
+                    document.getElementById('viewResult').className = 'result success';
+                }
+            } catch (error) {
+                document.getElementById('viewResult').innerHTML = '<span class="error">✗ Error: ' + error.message + '</span>';
+                document.getElementById('viewResult').className = 'result error';
+            }
+        }
+        
+        function clearData() {
+            try {
+                localStorage.removeItem(NUTRITION_STORAGE_KEY);
+                document.getElementById('clearResult').innerHTML = '<span class="success">✓ All data cleared successfully!</span>';
+                document.getElementById('clearResult').className = 'result success';
+            } catch (error) {
+                document.getElementById('clearResult').innerHTML = '<span class="error">✗ Error: ' + error.message + '</span>';
+                document.getElementById('clearResult').className = 'result error';
+            }
+        }
+        
+        // Test CSV export functionality (same as in the main form)
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'n') {
+                try {
+                    const data = JSON.parse(localStorage.getItem(NUTRITION_STORAGE_KEY) || '[]');
+                    if (!Array.isArray(data) || data.length === 0) {
+                        document.getElementById('exportResult').innerHTML = '<span class="error">No data to export!</span>';
+                        document.getElementById('exportResult').className = 'result error';
+                        return;
+                    }
+                    
+                    // Convert to CSV with proper formatting
+                    const keys = Object.keys(data[0]);
+                    const csvHeader = keys.join(',');
+                    const csvRows = data.map(row => 
+                        keys.map(key => {
+                            const value = String(row[key] ?? '').replace(/"/g, '""');
+                            return `"${value}"`;
+                        }).join(',')
+                    );
+                    const csv = [csvHeader, ...csvRows].join('\r\n');
+                    
+                    // Download CSV file
+                    const blob = new Blob([csv], { type: 'text/csv' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `nutrition_test_export_${Date.now()}.csv`;
+                    document.body.appendChild(link);
+                    link.click();
+                    setTimeout(() => {
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(url);
+                    }, 100);
+                    
+                    document.getElementById('exportResult').innerHTML = '<span class="success">✓ CSV export initiated! Check your downloads folder.</span>';
+                    document.getElementById('exportResult').className = 'result success';
+                } catch (error) {
+                    document.getElementById('exportResult').innerHTML = '<span class="error">✗ Export error: ' + error.message + '</span>';
+                    document.getElementById('exportResult').className = 'result error';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
