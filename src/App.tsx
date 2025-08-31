@@ -3,6 +3,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { LoadingPage } from './components/LoadingPage';
 import { PageLayout } from './components/PageLayout';
+import SecretAdminAccess from './components/SecretAdminAccess';
 
 // Lazy load pages for better performance
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -11,6 +12,7 @@ const TrainersPage = lazy(() => import('./pages/TrainersPage').then(module => ({
 const NutritionPage = lazy(() => import('./pages/NutritionPage'));
 const GalleryPage = lazy(() => import('./pages/GalleryPage').then(module => ({ default: module.GalleryPage })));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
+const AdminPage = lazy(() => import('./pages/AdminPage'));
 
 // Error Boundary Component
 class ErrorBoundary extends Component<
@@ -53,6 +55,7 @@ function App() {
     <ErrorBoundary>
       <Router>
         <div className="min-h-screen bg-black">
+          <SecretAdminAccess />
           <Suspense fallback={<LoadingPage />}>
             <Routes>
               <Route 
@@ -102,6 +105,11 @@ function App() {
                     <ContactPage />
                   </PageLayout>
                 } 
+              />
+              {/* Hidden Admin Route - Secret URL with password protection */}
+              <Route 
+                path="/tft-secure-admin-2024" 
+                element={<AdminPage />} 
               />
               {/* Catch-all route for 404s */}
               <Route 
