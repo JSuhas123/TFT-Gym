@@ -23,7 +23,7 @@ export const HomePage: React.FC = () => {
       gradient: "from-yellow-500 to-amber-500"
     },
     {
-      title: "Spa & Sauna",
+      title: "Sauna",
       description: "Recovery and relaxation facilities",
       icon: "🧖‍♀️",
       gradient: "from-yellow-400 to-amber-400"
@@ -152,8 +152,8 @@ export const HomePage: React.FC = () => {
     };
   }, []);
 
-  // Replace with your desired YouTube video ID
-  const youtubeVideoId = "dQw4w9WgXcQ";
+  // YouTube gym tour video ID
+  const youtubeVideoId = "Up6-OCpT3eg";
 
   return (
     <main className="bg-black min-h-screen">
@@ -222,7 +222,7 @@ export const HomePage: React.FC = () => {
                 {/* YouTube Embed */}
                 <iframe
                   src={`https://www.youtube.com/embed/${youtubeVideoId}?rel=0&modestbranding=1&showinfo=0&controls=1&autoplay=0`}
-                  title="Bolt Fitness Gym Tour"
+                  title="Thrust Fit Tribe Gym Tour"
                   className="w-full h-full"
                   style={{ border: 'none' }}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

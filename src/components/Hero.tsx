@@ -37,7 +37,7 @@ export const Hero: React.FC = () => {
   }, [analytics]);
 
   const socialLinks = [
-    { icon: Instagram, url: "https://www.instagram.com/thrust.fitness?igsh=d2NveHA2cjJreHg3", label: "Instagram" },
+    { icon: Instagram, url: "https://www.instagram.com/thrust.fit.tribe?igsh=d2NveHA2cjJreHg3", label: "Instagram" },
   ];
 
   return (
@@ -170,7 +170,7 @@ export const Hero: React.FC = () => {
         >
           {[
             { icon: Zap, number: "5:30AM-10:30PM", label: "Access", delay: 0 },
-            { icon: Trophy, number: "40+", label: "Equipment", delay: 0.1 },
+            { icon: Trophy, number: "100+", label: "Equipment", delay: 0.1 },
             { icon: Sparkles, number: "Expert", label: "Trainers", delay: 0.2 }
           ].map((feature, index) => (
             <motion.div 

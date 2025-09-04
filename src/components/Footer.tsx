@@ -126,7 +126,7 @@ export const Footer = () => {
   const socialLinks = [
     {
       icon: Instagram,
-      href: 'https://www.instagram.com/thrust.fitness?igsh=d2NveHA2cjJreHg3',
+      href: 'https://www.instagram.com/thrust.fit.tribe?igsh=d2NveHA2cjJreHg3',
       label: 'Instagram',
     },
   ];

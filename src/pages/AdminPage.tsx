@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Download, Eye, EyeOff, Lock, Shield, Trash2 } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 interface NutritionSubmission {
   name: string;
@@ -13,6 +13,7 @@ interface NutritionSubmission {
   activityLevel: string;
   dietaryRestrictions: string;
   submittedAt: string;
+  [key: string]: string | number | undefined; // Allow additional fields from form
 }
 
 const AdminPage: React.FC = () => {
@@ -29,18 +30,18 @@ const AdminPage: React.FC = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Admin password (you can change this)
-  const ADMIN_PASSWORD = 'ThrustFit2024!';
+  // Admin PIN (4-digit secret PIN)
+  const ADMIN_PIN = '2024';
   const NUTRITION_STORAGE_KEY = 'nutrition_submissions_v1';
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
+    if (password === ADMIN_PIN) {
       setIsAuthenticated(true);
       setError('');
       loadSubmissions();
     } else {
-      setError('Invalid password. Please try again.');
+      setError('Invalid PIN. Please try again.');
       setPassword('');
     }
   };
@@ -95,17 +96,18 @@ const AdminPage: React.FC = () => {
         return;
       }
 
-      const headers = ['Name', 'Email', 'Phone', 'Age', 'Weight', 'Height', 'Fitness Goal', 'Activity Level', 'Dietary Restrictions', 'Submitted At'];
+      const headers = ['Name', 'Email', 'Phone', 'Age', 'Gender', 'Weight', 'Height', 'Fitness Goal', 'Activity Level', 'Dietary Restrictions', 'Submitted At'];
       const csvHeader = headers.join(',');
       const csvRows = submissions.map(row => [
         `"${row.name || ''}"`,
         `"${row.email || ''}"`,
         `"${row.phone || ''}"`,
         `"${row.age || ''}"`,
+        `"${row.gender || ''}"`,
         `"${row.weight || ''}"`,
         `"${row.height || ''}"`,
-        `"${row.fitnessGoal || ''}"`,
-        `"${row.activityLevel || ''}"`,
+        `"${row.fitnessGoal?.replace('-', ' ') || ''}"`,
+        `"${row.activityLevel?.replace('-', ' ') || ''}"`,
         `"${row.dietaryRestrictions || ''}"`,
         `"${row.submittedAt || ''}"`
       ].join(','));
@@ -116,7 +118,7 @@ const AdminPage: React.FC = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `nutrition_submissions_${new Date().toISOString().split('T')[0]}.csv`;
+      link.download = `nutrition_data_${new Date().toISOString().split('T')[0]}.csv`;
       document.body.appendChild(link);
       link.click();
       setTimeout(() => {
@@ -138,28 +140,41 @@ const AdminPage: React.FC = () => {
         return;
       }
 
-      const headers = ['Name', 'Email', 'Phone', 'Age', 'Weight', 'Height', 'Fitness Goal', 'Activity Level', 'Dietary Restrictions', 'Submitted At'];
-      const tsvHeader = headers.join('\t');
-      const tsvRows = submissions.map(row => [
-        row.name || '',
-        row.email || '',
-        row.phone || '',
-        row.age || '',
-        row.weight || '',
-        row.height || '',
-        row.fitnessGoal || '',
-        row.activityLevel || '',
-        row.dietaryRestrictions || '',
-        row.submittedAt || ''
-      ].join('\t'));
+      // Create detailed headers for Excel
+      const headers = [
+        'Name', 'Email', 'Phone', 'Age', 'Gender', 'Weight (kg)', 'Height (cm)', 
+        'Fitness Goal', 'Activity Level', 'Dietary Restrictions', 'Submission Date', 'Submission Time'
+      ];
       
-      const tsv = [tsvHeader, ...tsvRows].join('\r\n');
+      const excelHeader = headers.join('\t');
+      const excelRows = submissions.map(row => {
+        const submissionDate = row.submittedAt ? new Date(row.submittedAt) : new Date();
+        return [
+          row.name || '',
+          row.email || '',
+          row.phone || '',
+          row.age || '',
+          row.gender || '',
+          row.weight || '',
+          row.height || '',
+          row.fitnessGoal?.replace('-', ' ') || '',
+          row.activityLevel?.replace('-', ' ') || '',
+          row.dietaryRestrictions || '',
+          submissionDate.toLocaleDateString(),
+          submissionDate.toLocaleTimeString()
+        ].join('\t');
+      });
+      
+      const excel = [excelHeader, ...excelRows].join('\r\n');
 
-      const blob = new Blob([tsv], { type: 'application/vnd.ms-excel' });
+      // Create Excel file with proper headers
+      const blob = new Blob(['\ufeff' + excel], { 
+        type: 'application/vnd.ms-excel;charset=utf-8' 
+      });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `nutrition_submissions_${new Date().toISOString().split('T')[0]}.xls`;
+      link.download = `Nutrition_Data_${new Date().toISOString().split('T')[0]}.xls`;
       document.body.appendChild(link);
       link.click();
       setTimeout(() => {
@@ -167,10 +182,60 @@ const AdminPage: React.FC = () => {
         URL.revokeObjectURL(url);
       }, 100);
 
-      setSuccess('Excel file exported successfully!');
+      setSuccess('📊 Excel file exported successfully!');
       setTimeout(() => setSuccess(''), 3000);
     } catch {
       setError('Error exporting Excel file');
+    }
+  };
+
+  const generateTestData = () => {
+    const testSubmissions = [
+      {
+        name: 'John Doe',
+        email: 'john@example.com',
+        phone: '+1-555-0123',
+        age: 28,
+        weight: 75,
+        height: 180,
+        fitnessGoal: 'weight-loss',
+        activityLevel: 'moderately-active',
+        dietaryRestrictions: 'None',
+        submittedAt: new Date().toISOString()
+      },
+      {
+        name: 'Jane Smith',
+        email: 'jane@example.com',
+        phone: '+1-555-0456',
+        age: 24,
+        weight: 65,
+        height: 165,
+        fitnessGoal: 'muscle-gain',
+        activityLevel: 'very-active',
+        dietaryRestrictions: 'Vegetarian',
+        submittedAt: new Date(Date.now() - 86400000).toISOString() // Yesterday
+      },
+      {
+        name: 'Mike Johnson',
+        email: 'mike@example.com',
+        phone: '+1-555-0789',
+        age: 32,
+        weight: 85,
+        height: 185,
+        fitnessGoal: 'strength',
+        activityLevel: 'extremely-active',
+        dietaryRestrictions: 'Gluten-free',
+        submittedAt: new Date(Date.now() - 172800000).toISOString() // 2 days ago
+      }
+    ];
+
+    try {
+      localStorage.setItem(NUTRITION_STORAGE_KEY, JSON.stringify(testSubmissions));
+      loadSubmissions();
+      setSuccess('✅ Test data generated successfully!');
+      setTimeout(() => setSuccess(''), 3000);
+    } catch {
+      setError('Failed to generate test data');
     }
   };
 
@@ -194,19 +259,6 @@ const AdminPage: React.FC = () => {
     setSubmissions([]);
   };
 
-  // Keyboard shortcut for quick export
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (isAuthenticated && e.ctrlKey && e.altKey && e.key.toLowerCase() === 'e') {
-        e.preventDefault();
-        exportCSV();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isAuthenticated]);
-
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center px-4">
@@ -218,13 +270,13 @@ const AdminPage: React.FC = () => {
           <div className="text-center mb-8">
             <Shield className="h-16 w-16 text-yellow-400 mx-auto mb-4" />
             <h1 className="text-3xl font-bold text-white mb-2">Admin Access</h1>
-            <p className="text-gray-400">Enter password to access nutrition data</p>
+            <p className="text-gray-400">Enter PIN to access data</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
-                Admin Password
+                PIN
               </label>
               <div className="relative">
                 <input
@@ -232,8 +284,10 @@ const AdminPage: React.FC = () => {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
-                  placeholder="Enter admin password"
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent text-center text-2xl tracking-widest"
+                  placeholder="• • • •"
+                  maxLength={4}
+                  pattern="[0-9]{4}"
                   required
                 />
                 <button
@@ -263,14 +317,12 @@ const AdminPage: React.FC = () => {
               className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
             >
               <Lock className="h-5 w-5 mr-2" />
-              Access Admin Panel
+              Access Panel
             </motion.button>
           </form>
 
           <div className="mt-6 text-center text-gray-500 text-sm">
-            <p>🔒 Secure access to Thrust Fit Tribe nutrition data</p>
-            <p className="mt-2 text-xs">💡 Access: /tft-secure-admin-2024 or Ctrl+Shift+A+D+M</p>
-            <p className="text-xs">🔑 Password: ThrustFit2024!</p>
+            <p>Secure access to data</p>
           </div>
         </motion.div>
       </div>
@@ -287,11 +339,8 @@ const AdminPage: React.FC = () => {
           className="flex justify-between items-center mb-8"
         >
           <div>
-            <h1 className="text-4xl font-bold text-yellow-400 mb-2">🔒 Admin Dashboard</h1>
-            <p className="text-gray-400">Nutrition Form Submissions Management</p>
-            <p className="text-xs text-gray-500 mt-1">
-              💡 Hidden URL: /tft-secure-admin-2024 | Secret Key: Ctrl+Shift+A+D+M
-            </p>
+            <h1 className="text-4xl font-bold text-yellow-400 mb-2">Dashboard</h1>
+            <p className="text-gray-400">Data Management System</p>
           </div>
           <motion.button
             onClick={logout}
@@ -361,6 +410,13 @@ const AdminPage: React.FC = () => {
             🔄 Refresh Data
           </motion.button>
           <motion.button
+            onClick={generateTestData}
+            whileHover={{ scale: 1.05 }}
+            className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+          >
+            🧪 Generate Test Data
+          </motion.button>
+          <motion.button
             onClick={exportCSV}
             whileHover={{ scale: 1.05 }}
             className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center"
@@ -374,7 +430,7 @@ const AdminPage: React.FC = () => {
             className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center"
           >
             <Download className="h-5 w-5 mr-2" />
-            Export Excel
+            📊 Export Excel
           </motion.button>
           <motion.button
             onClick={clearAllData}
@@ -393,9 +449,9 @@ const AdminPage: React.FC = () => {
           className="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden"
         >
           <div className="p-6 border-b border-gray-700">
-            <h2 className="text-2xl font-bold text-white mb-2">Nutrition Submissions</h2>
+            <h2 className="text-2xl font-bold text-white mb-2">Form Submissions</h2>
             <p className="text-gray-400">
-              {submissions.length} total submissions • Press Ctrl+Alt+E for quick CSV export
+              {submissions.length} total submissions
             </p>
           </div>
           
@@ -414,10 +470,13 @@ const AdminPage: React.FC = () => {
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-200">Name</th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-200">Email</th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-200">Phone</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-200">Goal</th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-200">Age</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-200">Weight</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-200">Height</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-200">Goal</th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-200">Activity</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-200">Submitted</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-200">Diet Restrictions</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-200">Date</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-700">
@@ -427,13 +486,16 @@ const AdminPage: React.FC = () => {
                       <td className="px-6 py-4 text-sm text-white font-medium">{submission.name || 'N/A'}</td>
                       <td className="px-6 py-4 text-sm text-gray-300">{submission.email || 'N/A'}</td>
                       <td className="px-6 py-4 text-sm text-gray-300">{submission.phone || 'N/A'}</td>
+                      <td className="px-6 py-4 text-sm text-gray-300">{submission.age || 'N/A'}</td>
+                      <td className="px-6 py-4 text-sm text-gray-300">{submission.weight ? `${submission.weight} kg` : 'N/A'}</td>
+                      <td className="px-6 py-4 text-sm text-gray-300">{submission.height ? `${submission.height} cm` : 'N/A'}</td>
                       <td className="px-6 py-4 text-sm text-gray-300">
                         <span className="bg-yellow-400/20 text-yellow-400 px-2 py-1 rounded-full text-xs">
                           {submission.fitnessGoal?.replace('-', ' ').toUpperCase() || 'N/A'}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-300">{submission.age || 'N/A'}</td>
                       <td className="px-6 py-4 text-sm text-gray-300">{submission.activityLevel?.replace('-', ' ') || 'N/A'}</td>
+                      <td className="px-6 py-4 text-sm text-gray-300 max-w-xs truncate">{submission.dietaryRestrictions || 'None'}</td>
                       <td className="px-6 py-4 text-sm text-gray-300">
                         {submission.submittedAt ? new Date(submission.submittedAt).toLocaleDateString() : 'N/A'}
                       </td>

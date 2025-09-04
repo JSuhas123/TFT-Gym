@@ -3,7 +3,6 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { LoadingPage } from './components/LoadingPage';
 import { PageLayout } from './components/PageLayout';
-import SecretAdminAccess from './components/SecretAdminAccess';
 
 // Lazy load pages for better performance
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -55,7 +54,6 @@ function App() {
     <ErrorBoundary>
       <Router>
         <div className="min-h-screen bg-black">
-          <SecretAdminAccess />
           <Suspense fallback={<LoadingPage />}>
             <Routes>
               <Route 
