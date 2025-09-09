@@ -33,7 +33,7 @@ export const AboutPage: React.FC = () => {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
           style={{
-            backgroundImage: 'url(https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=1920)',
+            backgroundImage: 'url(/about.jpg)',
           }}
         />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -85,7 +85,7 @@ export const AboutPage: React.FC = () => {
               className="relative"
             >
               <img
-                src="https://images.pexels.com/photos/1431282/pexels-photo-1431282.jpeg?auto=compress&cs=tinysrgb&w=800"
+                src="about1.jpg"
                 alt="Gym interior"
                 className="rounded-lg shadow-2xl"
               />

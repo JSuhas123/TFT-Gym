@@ -5,7 +5,8 @@ export const TRAINER_IMAGES = {
   jacob: '/Jacob.JPG',
   karan: '/Karan.jpg',
   sendil: '/Sendil.jpg',
-  vinod: '/Vinod.JPG'
+  vinod: '/Vinod.JPG',
+  vishal: '/vishal.jpg'
 } as const;
 
 export const FALLBACK_IMAGES = {

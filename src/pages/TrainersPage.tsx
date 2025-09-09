@@ -15,6 +15,14 @@ type Trainer = {
 export const TrainersPage: React.FC = () => {
   const trainers: Trainer[] = [
     {
+      name: 'Vinod',
+      specialty: 'CrossFit, Functional Training & Kickboxing',
+      experience: '12+ years',
+      certifications: ['Certified Trainer', 'CrossFit'],
+      image: getTrainerImage('Vinod'),
+      bio: 'Specialist in fat loss, muscle gain, and functional training, with expertise in injury recovery and rehabilitation.'
+    },
+    {
       name: 'Jacob',
       specialty: 'Bodybuilding, Fat Loss & Muscle Gain',
       experience: '20+ years',
@@ -25,26 +33,18 @@ export const TrainersPage: React.FC = () => {
     {
       name: 'Karan',
       specialty: 'Fat Loss & Nutrition',
-      experience: '3+ years',
+      experience: '4+ years',
       certifications: ['Certified Trainer'],
       image: getTrainerImage('Karan'),
       bio: 'Young and dynamic trainer specializing in fat loss and nutrition guidance to help clients transform effectively.'
     },
     {
-      name: 'Sendil',
-      specialty: 'Strength Training, Fat Loss & Weight Gain',
-      experience: '2+ years ',
-      certifications: [],
-      image: getTrainerImage('Sendil'),
-      bio: 'Focused on strength training, fat loss, and sustainable weight gain strategies tailored for individuals.'
-    },
-    {
-      name: 'Vinod',
-      specialty: 'CrossFit, Functional Training & Kickboxing',
-      experience: '2+ years',
-      certifications: ['Physiotherapist'],
-      image: getTrainerImage('Vinod'),
-      bio: 'Specialist in fat loss, muscle gain, and functional training, with expertise in injury recovery and rehabilitation.'
+      name: 'Vishal',
+      specialty: 'Fat Loss & Nutrition',
+      experience: '4+ years',
+      certifications: ['Certified Trainer'],
+      image: getTrainerImage('vishal'),
+      bio: 'Young and dynamic trainer specializing in fat loss and nutrition guidance to help clients transform effectively.'
     }
   ];
 

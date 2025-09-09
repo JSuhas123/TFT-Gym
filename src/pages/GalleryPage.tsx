@@ -7,34 +7,29 @@ export const GalleryPage: React.FC = () => {
 
   const images = [
     {
-      src: 'https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=800',
+      src: '/gallery/equip6.jpg',
       alt: 'Modern gym equipment',
       category: 'Equipment'
     },
     {
-      src: 'https://images.pexels.com/photos/1431282/pexels-photo-1431282.jpeg?auto=compress&cs=tinysrgb&w=800',
-      alt: 'Group fitness class',
-      category: 'Classes'
-    },
-    {
-      src: 'https://images.pexels.com/photos/1552106/pexels-photo-1552106.jpeg?auto=compress&cs=tinysrgb&w=800',
+      src: '/gallery/equip2.jpg',
       alt: 'Weight training area',
       category: 'Equipment'
     },
     {
-      src: 'https://images.pexels.com/photos/416778/pexels-photo-416778.jpeg?auto=compress&cs=tinysrgb&w=800',
-      alt: 'Cardio equipment',
+      src: '/gallery/equip3.jpg',
+      alt: 'Strength training equipmentt',
       category: 'Equipment'
     },
     {
-      src: 'https://images.pexels.com/photos/1552252/pexels-photo-1552252.jpeg?auto=compress&cs=tinysrgb&w=800',
-      alt: 'HIIT training session',
-      category: 'Classes'
+      src: '/gallery/equip4.jpg',
+      alt: 'Strength training equipment',
+      category: 'Equipment'
     },
     {
-      src: 'https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg?auto=compress&cs=tinysrgb&w=800',
-      alt: 'Yoga class',
-      category: 'Classes'
+      src: '/gallery/equip5.jpg',
+      alt: 'Functional training equipment',
+      category: 'Equipment'
     },
     {
       src: 'https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=800',
@@ -42,38 +37,16 @@ export const GalleryPage: React.FC = () => {
       category: 'Training'
     },
     {
-      src: 'https://images.pexels.com/photos/3768916/pexels-photo-3768916.jpeg?auto=compress&cs=tinysrgb&w=800',
-      alt: 'Fitness consultation',
-      category: 'Training'
-    },
-    {
-      src: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800',
-      alt: 'Nutrition consultation',
-      category: 'Nutrition'
-    },
-    {
-      src: 'https://images.pexels.com/photos/1640770/pexels-photo-1640770.jpeg?auto=compress&cs=tinysrgb&w=800',
-      alt: 'Healthy meal prep',
-      category: 'Nutrition'
-    },
-    {
-      src: 'https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg?auto=compress&cs=tinysrgb&w=800',
-      alt: 'Fresh ingyellowients',
-      category: 'Nutrition'
-    },
-    {
       src: 'https://images.pexels.com/photos/416528/pexels-photo-416528.jpeg?auto=compress&cs=tinysrgb&w=800',
       alt: 'Hydration station',
       category: 'Facilities'
+    },
+    {
+      src: '/gallery/equip1.jpg',
+      alt: 'Modern gym equipment',
+      category: 'Equipment'
     }
   ];
-
-  const categories = ['All', 'Equipment', 'Classes', 'Training', 'Nutrition', 'Facilities'];
-  const [activeCategory, setActiveCategory] = useState('All');
-
-  const filteredImages = activeCategory === 'All' 
-    ? images 
-    : images.filter(img => img.category === activeCategory);
 
   const openModal = (index: number) => {
     setSelectedImage(index);
@@ -85,13 +58,13 @@ export const GalleryPage: React.FC = () => {
 
   const nextImage = () => {
     if (selectedImage !== null) {
-      setSelectedImage((selectedImage + 1) % filteredImages.length);
+      setSelectedImage((selectedImage + 1) % images.length);
     }
   };
 
   const prevImage = () => {
     if (selectedImage !== null) {
-      setSelectedImage(selectedImage === 0 ? filteredImages.length - 1 : selectedImage - 1);
+      setSelectedImage(selectedImage === 0 ? images.length - 1 : selectedImage - 1);
     }
   };
 
@@ -102,7 +75,7 @@ export const GalleryPage: React.FC = () => {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
           style={{
-            backgroundImage: 'url(https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=1920)',
+            backgroundImage: 'url(/gallery/bggal.jpg)',
           }}
         />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -125,29 +98,6 @@ export const GalleryPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Category Filter */}
-      <section className="py-8 bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap justify-center gap-4">
-            {categories.map((category) => (
-              <motion.button
-                key={category}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveCategory(category)}
-                className={`px-6 py-2 rounded-full font-semibold transition-colors duration-300 ${
-                  activeCategory === category
-                    ? 'bg-yellow-600 text-white'
-                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                }`}
-              >
-                {category}
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Gallery Grid */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -156,9 +106,9 @@ export const GalleryPage: React.FC = () => {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           >
             <AnimatePresence>
-              {filteredImages.map((image, index) => (
+              {images.map((image, index) => (
                 <motion.div
-                  key={`${activeCategory}-${index}`}
+                  key={index}
                   layout
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -175,7 +125,6 @@ export const GalleryPage: React.FC = () => {
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
                     <div className="text-white text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <p className="font-semibold">{image.alt}</p>
-                      <p className="text-sm text-gray-300">{image.category}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -203,8 +152,8 @@ export const GalleryPage: React.FC = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <img
-                src={filteredImages[selectedImage].src}
-                alt={filteredImages[selectedImage].alt}
+                src={images[selectedImage].src}
+                alt={images[selectedImage].alt}
                 className="max-w-full max-h-full object-contain rounded-lg"
               />
               
@@ -232,8 +181,7 @@ export const GalleryPage: React.FC = () => {
 
               {/* Image Info */}
               <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white p-4 rounded-lg">
-                <p className="font-semibold">{filteredImages[selectedImage].alt}</p>
-                <p className="text-sm text-gray-300">{filteredImages[selectedImage].category}</p>
+                <p className="font-semibold">{images[selectedImage].alt}</p>
               </div>
             </motion.div>
           </motion.div>
